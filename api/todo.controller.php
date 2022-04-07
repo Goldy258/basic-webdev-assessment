@@ -32,9 +32,28 @@ class TodoController {
         return false;
     }
 
-    public function create(Todo $todo) : bool {
+    public function create(Todo $todo) : Todo | bool {
         // implement your code here
-        return true;
+
+        
+        $fp = fopen('lidn2.txt', 'a+');
+        fwrite($fp, "In controller Create: ");
+        fwrite($fp, $todo->id);
+        fwrite($fp, PHP_EOL);
+
+        array_push($this->todos,$todo);
+        fwrite($fp, "after push: ");
+        foreach ( $this->todos as $todo ) {
+            fwrite($fp, $todo->title);
+            fwrite($fp, PHP_EOL);
+        }
+        fclose($fp);
+
+        $fp = fopen(self::PATH, 'w');
+        fwrite($fp, print_r(json_encode($this->todos), true));
+        fclose($fp);
+        return $todo;
+        //return true;
     }
 
     public function update(string $id, Todo $todo) : bool {

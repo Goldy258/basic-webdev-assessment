@@ -7,8 +7,8 @@ try {
     $requestType = $_SERVER['REQUEST_METHOD'];
     $body = file_get_contents('php://input');
     $pathCount = count($path);
-
     $controller = new TodoController();
+
     
     switch($requestType) {
         case 'GET':
@@ -28,6 +28,31 @@ try {
             break;
         case 'POST':
             //implement your code here
+       
+             $fp = fopen('lidn.txt', 'a+');
+            fwrite($fp, $body);
+            fwrite($fp, PHP_EOL);
+                
+            fwrite($fp, "data decoding: ");
+            $todo = json_decode($body);
+            fwrite($fp, $todo->title);
+            fwrite($fp, PHP_EOL);
+            fwrite($fp, "creating obj: ");
+            fwrite($fp, PHP_EOL);
+       
+            $test = new Todo(
+                $todo->id,
+                $todo->title,
+                $todo->description,
+                settype(  $todo->done, 'boolean')
+            );
+            fwrite($fp, "sending to Controller: ");
+
+           
+            http_response_code(200);
+            die(json_encode( $controller->create($test)));
+        
+            fclose($fp);
             break;
         case 'PUT':
             //implement your code here

@@ -6,8 +6,12 @@ function putTodo(todo) {
 
 function postTodo(todo) {
     // implement your code here
-    console.log("calling postTodo");
-    console.log(todo);
+    fetch(window.location.href + 'api/todo',{method: 'POST',body: JSON.stringify(todo)})
+    .then(response =>showToastMessage('Created Succesfully'))
+    .catch(error => showToastMessage('Failed to create todos...'));
+    
+    // console.log("calling postTodo");
+    // console.log(todo);
 }
 
 function deleteTodo(todo) {
